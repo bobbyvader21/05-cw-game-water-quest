@@ -119,7 +119,6 @@ function handleCellClick(index) {
     messageDisplay.textContent = "Nice catch! +1 point";
     messageDisplay.className = "";
   } else if (index === obstacleCell) {
-    // Keep the score from dropping below zero
     const penalty = score > 0 ? 1 : 0;
     score = Math.max(0, score - 1);
 
@@ -134,7 +133,12 @@ function handleCellClick(index) {
 
   scoreDisplay.textContent = score;
 
-  // Replace items immediately after a successful interaction
+  // Stop immediately at 20 points and trigger the win celebration.
+  if (score >= GOAL_DROPS) {
+    endGame();
+    return;
+  }
+
   clearInterval(spawnInterval);
   spawnItems();
   spawnInterval = setInterval(spawnItems, SPAWN_DELAY);
@@ -191,7 +195,10 @@ function endGame() {
   clearInterval(timerInterval);
   clearBoard();
 
-  timerDisplay.textContent = "0";
+  timerDisplay.textContent = Math.max(
+    0,
+    Math.ceil((endTime - Date.now()) / 1000)
+  );
 
   Array.from(grid.children).forEach(cell => {
     cell.disabled = true;
