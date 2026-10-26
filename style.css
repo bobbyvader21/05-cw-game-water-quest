@@ -1,21 +1,7 @@
-/* Charity: water Brand Colors & Fonts
-
-Primary Colors:
-- Yellow:     #FFC907
-- Blue:       #2E9DF7
-
-Secondary Colors:
-- Light Blue: #8BD1CB
-- Green:      #4FCB53
-- Orange:     #FF902A
-- Red:        #F5402C
-- Dark Green: #159A48
-- Pink:       #F16061
-
-Fonts:
-- Proxima Nova
-- Avenir
-
+/* charity: water colors
+   Yellow: #FFC907
+   Blue: #2E9DF7
+   Red: #F5402C
 */
 
 * {
@@ -23,48 +9,51 @@ Fonts:
 }
 
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 30px;
-  background-color: #f0f0f0;
-  color: #333;
+  padding: 24px;
+  font-family: "Proxima Nova", Avenir, Arial, sans-serif;
+  background-color: #f3f7fa;
+  color: #222;
 }
 
 .container {
-  max-width: 750px;
-  margin: 50px auto;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 16px auto;
+  padding: 28px;
+  background-color: white;
+  border-top: 8px solid #ffc907;
+  border-radius: 12px;
+}
+
+/* Optional provided logo */
+.brand-logo {
+  display: block;
+  max-width: 190px;
+  max-height: 65px;
+  margin: 0 auto 24px;
+  object-fit: contain;
 }
 
 h1 {
+  margin: 0 0 16px;
   text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-h1 img {
-  height: 50px;
-  margin-right: 15px;
-  display: block;
+  font-size: clamp(28px, 7vw, 40px);
 }
 
 .game-instructions {
-  font-size: 18px;
-  margin-bottom: 30px;
   text-align: center;
+  line-height: 1.5;
 }
 
+/* Score and timer */
 .stats {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  background-color: #f5f5f5;
-  padding: 15px 0;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #fff6d6;
   border-radius: 8px;
 }
 
@@ -72,72 +61,209 @@ h1 img {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
-  color: #333;
 }
 
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin: 0 auto;
-  max-width: 500px;
-}
-
-.grid-cell {
-  background-color: #e8e8e8;
-  border-radius: 8px;
-  aspect-ratio: 1;
+/* Gameplay and result messages */
+#message {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  position: relative;
-  overflow: hidden;
+  min-height: 72px;
+  margin: 12px 0;
+  text-align: center;
+  line-height: 1.4;
 }
 
-.water-can-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  /* Ensure the wrapper is properly centered */
+.win {
+  color: #116b32;
+  font-weight: bold;
 }
 
-.water-can {
+.try-again {
+  color: #8a3c00;
+  font-weight: bold;
+}
+
+/* 3x3 game board */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grid-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 100%;
-  background-image: url('img/water-can.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid #d9e2e8;
+  border-radius: 10px;
+  background-color: #f3f7fa;
   cursor: pointer;
-  border-radius: 50%;
-  animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
-  transform-origin: center; /* Ensure scaling happens from the center */
+  touch-action: manipulation;
 }
 
-@keyframes popUp {
-  0% {
-    transform: scale(0.5); /* Start scaling from the center */
-  }
-  100% {
-    transform: scale(1); /* End scaling at full size */
-  }
+.grid-cell:disabled {
+  cursor: default;
 }
 
+/* Water drops */
+.grid-cell.has-drop {
+  border-color: #2e9df7;
+  background-color: #e5f3ff;
+}
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
+.grid-cell.has-drop:active {
+  background-color: #fff0ad;
+}
+
+.water-drop {
+  width: 48%;
+  height: 65%;
+  color: #2e9df7;
+  pointer-events: none;
+}
+
+/* Warning obstacles */
+.grid-cell.has-obstacle {
+  background-color: #ffebe8;
+  border-color: #f5402c;
+}
+
+.grid-cell.has-obstacle:active {
+  background-color: #ffc9c2;
+}
+
+.obstacle-icon {
+  color: #b52617;
+  font-size: clamp(32px, 10vw, 64px);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Keyboard focus */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #222;
+  outline-offset: 4px;
+}
+
+/* Start / Play Again button */
+.start-button {
   display: block;
-  margin: 30px auto 0;
-  transition: background-color 0.2s;
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffc907;
+  color: #222;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.start-button:hover:not(:disabled) {
+  background-color: #edba00;
+}
+
+.start-button:disabled {
+  background-color: #e5e5e5;
+  color: #555;
+  cursor: default;
+}
+
+/* Reset button */
+.reset-button {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  background-color: white;
+  color: #222;
+  border: 2px solid #222;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Footer and charity: water link */
+footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+footer p {
+  margin-bottom: 6px;
+}
+
+footer a {
+  color: #175b8c;
+}
+
+/* Confetti overlay does not block clicks */
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  animation: confetti-fall 3s linear both;
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(110vh) rotate(720deg);
+  }
+}
+
+/* Smaller screens */
+@media (max-width: 420px) {
+  body {
+    padding: 12px;
+  }
+
+  .container {
+    padding: 18px;
+    margin: 0 auto;
+  }
+
+  .stats {
+    padding: 12px;
+  }
+
+  .stats p {
+    font-size: 16px;
+  }
+
+  .game-grid {
+    gap: 8px;
+  }
+}
+
+/* Stationary confetti for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece {
+    animation: none;
+  }
 }
